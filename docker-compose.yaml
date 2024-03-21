@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  pg:
+    container_name: pg-container
+    build: .
+    environment:
+      POSTGRES_DB: "test"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    volumes:
+      - ./:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    command:
+      [
+        "postgres",
+        "-c",
+        "log_statement=all",
+        "-c",
+        "log_destination=stderr",
+        "-c",
+        "shared_preload_libraries=pg_cron",
+        "-c",
+        "cron.database_name=test",
+      ]
